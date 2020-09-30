@@ -1,6 +1,7 @@
 import React from 'react';
 import firebase from '../../firebase';
 import { Dropdown, Grid, Header, Icon, Image } from 'semantic-ui-react';
+import { connect } from 'react-redux';
 
 class UserPanel extends React.Component {
     state = {
@@ -32,9 +33,10 @@ class UserPanel extends React.Component {
 
     render() {
         const { user } = this.state;
+        const { primaryColor } = this.props;
 
         return (
-            <Grid style={{ background: '#503070' }}>
+            <Grid style={{ background: primaryColor }}>
                 <Grid.Column>
                     <Grid.Row style={{ padding: '1.2em', margin: 0 }}>
                         {/* App main header */}
