@@ -7,11 +7,17 @@ import { Segment, Comment } from 'semantic-ui-react';
 
 class Messages extends React.Component {
     state = {
+        privateChannel: this.props.isPrivateChannel,
+        privateMessagesRef: firebase.database().ref('privateMessages'),
         messagesRef: firebase.database().ref('messages'),
         messages: [],
         messagesLoading: true,
         channel: this.props.currentChannel,
         user: this.props.currentUser,
+        numUniqueUsers: '',
+        searchTerm: '',
+        searchLoading: false,
+        searchResults: [],
         progressBar: false
     }
 
@@ -29,14 +35,56 @@ class Messages extends React.Component {
 
     addMessageListener = channelId => {
         let loadedMessages = [];
-        this.state.messagesRef.child(channelId).on('child_added', snap => {
+        const ref = this.getMessagesRef();
+        ref.child(channelId).on('child_added', snap => {
             loadedMessages.push(snap.val());
             this.setState({
                 messages: loadedMessages,
                 messagesLoading: false
             });
+            this.countUniqueUsers(loadedMessages);
         });
     };
+
+    getMessagesRef = () => {
+        const { messagesRef, privateMessagesRef, privateChannel } = this.state;
+        return privateChannel ? privateMessagesRef : messagesRef;
+    }
+
+    handleSearchChange = event => {
+        this.setState({
+            searchTerm: event.target.value,
+            searchLoading: true
+        }, () => this.handleSearchMessages());
+    }
+
+    handleSearchMessages = () => {
+        const channelMessages = [...this.state.messages];
+        const regex = new RegExp(this.state.searchTerm, 'gi');
+        const searchResults = channelMessages.reduce((acc, message) => {
+            if (
+                (message.content && message.content.match(regex)) ||
+                message.user.name.match(regex)
+            ) {
+                acc.push(message);
+            }
+            return acc;
+        }, []);
+        this.setState({ searchResults });
+        setTimeout(() => this.setState({ searchLoading: false }), 1000);
+    }
+
+    countUniqueUsers = messages => {
+        const uniqueUsers = messages.reduce((acc, message) => {
+            if (!acc.includes(message.user.name)) {
+                acc.push(message.user.name);
+            }
+            return acc;
+        }, []);
+        const plural = uniqueUsers.length > 1 || uniqueUsers.length === 0;
+        const numUniqueUsers = `${uniqueUsers.length} user${plural ? 's' : ''}`;
+        this.setState({ numUniqueUsers });
+    }
 
     displayMessages = messages => (
         messages.length > 0 && messages.map(message => (
@@ -54,16 +102,26 @@ class Messages extends React.Component {
         }
     }
 
+    displayChannelName = (channel) => {
+        return channel ? `${this.state.privateChannel ? '@' : '#'}${channel.name}` : '';
+    };
+
     render() {
-        const { messagesRef, messages, channel, user, progressBar } = this.state;
+        const { messagesRef, messages, channel, user, progressBar, numUniqueUsers, searchTerm, searchResults, searchLoading, privateChannel } = this.state;
 
         return (
             <React.Fragment>
-                <MessagesHeader />
+                <MessagesHeader
+                    channelName={this.displayChannelName(channel)}
+                    numUniqueUsers={numUniqueUsers}
+                    handleSearchChange={this.handleSearchChange}
+                    searchLoading={searchLoading}
+                    isPrivateChannel={privateChannel}
+                />
 
                 <Segment>
                     <Comment.Group className={progressBar ? 'messages__progress' : 'messages'}>
-                        {this.displayMessages(messages)}
+                        {searchTerm ? this.displayMessages(searchResults) : this.displayMessages(messages)}
                     </Comment.Group>
                 </Segment>
 
@@ -72,6 +130,8 @@ class Messages extends React.Component {
                     currentChannel={channel}
                     currentUser={user}
                     isProgressBarVisible={this.isProgressBarVisible}
+                    isPrivateChannel={this.isPrivateChannel}
+                    getMessagesRef={this.getMessagesRef}
                 />
             </React.Fragment>
         )
