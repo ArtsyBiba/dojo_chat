@@ -43,7 +43,7 @@ class UserPanel extends React.Component {
         const { storageRef, userRef, blob, metadata } = this.state;
 
         storageRef
-            .child(`avatars/user-${userRef.uid}`)
+            .child(`avatars/user/${userRef.uid}`)
             .put(blob, metadata)
             .then(snap => {
                 snap.ref.getDownloadURL().then(downloadURL => {
@@ -104,8 +104,7 @@ class UserPanel extends React.Component {
     handleSignout = () => {
         firebase
             .auth()
-            .signOut()
-            .then(() => console.log('signed out'));
+            .signOut();
     }
 
     render() {

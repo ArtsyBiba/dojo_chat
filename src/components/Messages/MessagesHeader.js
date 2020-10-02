@@ -19,6 +19,7 @@ class MessagesHeader extends React.Component {
                         {!isPrivateChannel && (
                             <Icon
                                 onClick={handleStar}
+                                style={{ cursor: 'pointer' }}
                                 name={isChannelStarred ? 'star' : 'star outline'}
                                 color={isChannelStarred ? 'yellow' : 'black'}
                             />
