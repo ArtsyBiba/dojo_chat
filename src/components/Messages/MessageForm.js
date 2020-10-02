@@ -221,7 +221,7 @@ class MessageForm extends React.Component {
                     style={{ marginBottom: '0.7em' }}
                     label={
                         <Button
-                            icon={emojiPicker ? 'close' : 'add'}
+                            icon={emojiPicker ? 'close' : 'smile outline'}
                             content={emojiPicker ? 'close' : null}
                             onClick={this.handleTogglePicker}
                         />}

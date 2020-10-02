@@ -116,12 +116,12 @@ class UserPanel extends React.Component {
                 <Grid.Column>
                     <Grid.Row style={{ padding: '1.2em', margin: 0 }}>
                         {/* App main header */}
-                        <Header inverted floated="left" as="h2">
+                        <Header className="user__panel__header" style={{ marginBottom: '1em' }} inverted floated="left" as="h2">
                             <Icon name="chat" />
                             <Header.Content>DojoChat</Header.Content>
                         </Header>
                         {/* User Dropdown */}
-                        <Header style={{ padding: '0.25em' }} as="h4" inverted>
+                        <Header className="user__panel__header" style={{ padding: '0.25em' }} as="h4" inverted>
                             <Dropdown trigger={
                                 <span>
                                     <Image src={user.photoURL} spaced="right" avatar />
@@ -181,7 +181,7 @@ class UserPanel extends React.Component {
                         </Modal.Actions>
                     </Modal>
                 </Grid.Column>
-            </Grid>
+            </Grid >
         )
     }
 }

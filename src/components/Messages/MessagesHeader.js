@@ -12,6 +12,7 @@ class MessagesHeader extends React.Component {
                     fluid="true"
                     as="h2"
                     floated="left"
+                    className="messages__header"
                     style={{ marginBottom: 0 }}
                 >
                     <span>
@@ -19,7 +20,7 @@ class MessagesHeader extends React.Component {
                         {!isPrivateChannel && (
                             <Icon
                                 onClick={handleStar}
-                                style={{ cursor: 'pointer' }}
+                                style={{ cursor: 'pointer', marginLeft: '0.2em' }}
                                 name={isChannelStarred ? 'star' : 'star outline'}
                                 color={isChannelStarred ? 'yellow' : 'black'}
                             />

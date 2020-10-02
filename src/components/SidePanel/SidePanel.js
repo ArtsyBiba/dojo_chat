@@ -14,6 +14,7 @@ class SidePanel extends React.Component {
                 size="large"
                 inverted
                 fixed="left"
+                className="side__panel"
                 vertical
                 style={{ background: primaryColor, fontSize: '1.2rem' }}
             >

@@ -25,7 +25,7 @@ body,
 /* MessageForm.js */
 .message__form {
     position: fixed !important;
-    bottom: 1em;
+    bottom: 0.5em;
     margin-left: 320px !important;
     left: 0;
     right: 1em;
@@ -187,3 +187,8 @@ body,
     left: 40px;
     right: 20px;
 }
+
+/* Mobile setup */
+@media only screen and (max-width: 767px) {
+    /* add mobile styling */
+  }

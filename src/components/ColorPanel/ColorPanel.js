@@ -94,11 +94,12 @@ class ColorPanel extends React.Component {
                 inverted
                 vertical
                 visible
+                className="color__panel"
                 width="very thin"
             >
                 <Divider />
                 <Button
-                    icon="add"
+                    icon="paint brush"
                     size="small"
                     color="blue"
                     onClick={this.openModal}
