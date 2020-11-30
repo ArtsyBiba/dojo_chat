@@ -8,4 +8,4 @@ export const SET_PRIVATE_CHANNEL = 'SET_PRIVATE_CHANNEL';
 export const SET_USER_POSTS = 'SET_USER_POSTS';
 
 /* colors action types */
-export const SET_COLORS = "SET_COLORS";
+export const SET_COLORS = 'SET_COLORS';
